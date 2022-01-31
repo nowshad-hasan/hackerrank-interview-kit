@@ -8,10 +8,11 @@ import java.util.Stack;
  */
 public class CountingValleys {
     public static void main(String[] args) {
-        System.out.println(countingValleys(8, "UDDDUDUUDU"));
+        System.out.println(countingValleysWithStack(8, "UDDDUDUUDU"));
+        System.out.println(countingValleysWithoutStack(8, "UDDDUDUUDU"));
     }
 
-    public static int countingValleys(int steps, String path) {
+    public static int countingValleysWithStack(int steps, String path) {
         // Write your code here
         Stack<Character> mountainStack = new Stack<>();
         Stack<Character> valleyStack = new Stack<>();
@@ -41,4 +42,45 @@ public class CountingValleys {
         }
         return count;
     }
+
+    public static int countingValleysWithoutStack(int steps, String path) {
+        // Write your code here
+        int valleyCounter = 0;
+        int upCounter = 0;
+        int downCounter = 0;
+        boolean isGoingMountain = false;
+        boolean isGoingValley = false;
+
+        for (char ch : path.toCharArray()) {
+            if (upCounter == 0 && downCounter == 0) {
+                // sea level
+                if (ch == 'D') {
+                    valleyCounter += 1;
+                    isGoingValley = true;
+                    isGoingMountain = false;
+                } else {
+                    isGoingValley = false;
+                    isGoingMountain = true;
+                }
+            }
+
+            if (isGoingValley) {
+                if (ch == 'D') {
+                    downCounter += 1;
+                } else {
+                    downCounter -= 1;
+                }
+            }
+
+            if (isGoingMountain) {
+                if (ch == 'U') {
+                    upCounter += 1;
+                } else {
+                    upCounter -= 1;
+                }
+            }
+        }
+        return valleyCounter;
+    }
+
 }
